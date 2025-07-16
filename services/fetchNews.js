@@ -1,0 +1,33 @@
+// services/fetchNews.js
+import axios from 'axios';
+import dotenv from 'dotenv';
+dotenv.config();
+
+export async function fetchLatestTechNews() {
+  try {
+    const response = await axios.get('https://gnews.io/api/v4/top-headlines', {
+      params: {
+        topic: 'technology',
+        lang: 'en',
+        country: 'in', // India-specific tech news
+        max: 1,
+        token: process.env.GNEWS_API_KEY, 
+      },
+    });
+
+    const articles = response.data.articles;
+    if (!articles.length) return null;
+
+    const topArticle = articles[0];
+
+    return {
+      title: topArticle.title,
+      description: topArticle.description,
+      url: topArticle.url,
+      image: topArticle.image,
+    };
+  } catch (error) {
+    console.error('❌ Error fetching news from GNews:', error.response?.data || error.message);
+    return null;
+  }
+}

@@ -1,0 +1,29 @@
+# 🔐 Environment Variables
+.env
+
+# 📦 Node dependencies
+node_modules/
+
+# ⚙️ System files
+.DS_Store
+Thumbs.db
+
+# 🧪 Log files
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# 💻 IDE settings
+.vscode/
+.idea/
+
+# 🏗️ Build output (if used)
+dist/
+build/
+
+# 📜 Logs
+logs/
+*.log
+
+# 🔁 Runtime files (optional)
+.pnpm-debug.log
