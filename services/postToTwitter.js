@@ -12,7 +12,7 @@ const twitterClient = new TwitterApi({
 export async function postToTwitter(tweet) {
   try {
     const { data } = await twitterClient.v2.tweet(tweet);
-    console.log("✅ Tweet posted successfully:", data);
+    // console.log("✅ Tweet posted successfully:", data);
     return data;
   } catch (error) {
     console.error("❌ Twitter Post Error:", error.response?.data || error);
