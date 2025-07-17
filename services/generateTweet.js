@@ -40,7 +40,6 @@ Only reply with the tweet. Add 1-2 hashtags. No explanation.
     );
 
     const tweetText = response.data?.choices?.[0]?.message?.content?.trim() || null;
-    console.log("✅ Mistral Tweet:", tweetText);
     return tweetText;
   } catch (err) {
     console.error("❌ Mistral Axios Error:", err.response?.data || err.message);
