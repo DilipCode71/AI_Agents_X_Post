@@ -1,4 +1,4 @@
-// server.js
+
 import express from "express";
 import dotenv from "dotenv";
 import cron from "node-cron";
@@ -9,31 +9,27 @@ import { postToTwitter } from "./services/postToTwitter.js";
 dotenv.config();
 const app = express();
 
-// ✅ Home Route
 app.get("/", (req, res) => {
   res.send("🤖 AI Tweet Bot is running!");
 });
 
-// ✅ Tweet Route for Render Cron Job
+
 app.get("/tweet", async (req, res) => {
   try {
     const news = await fetchLatestTechNews();
-    console.log("📰 News:", news);
+    console.log("📰 News fetched:", Array.isArray(news) ? news.length : typeof news);
 
     const tweet = await generateTweetFromNews(news);
-    console.log("✍️ Tweet:", tweet);
+  console.log("✍️ Tweet preview:", tweet?.slice(0, 100));
 
     if (tweet) {
       await postToTwitter(tweet);
       return res.send("✅ Tweet posted successfully!");
-    return res.status(200).send("OK");
     }
      res.send("⚠️ No tweet generated");
-     res.status(200).send("No content");
   } catch (error) {
    console.error("❌ Tweet Error:", error.message);
    res.status(500).send("❌ Error generating or posting tweet");
-   res.sendStatus(500); 
   }
 });
 
