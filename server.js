@@ -17,14 +17,12 @@ app.get("/", (req, res) => {
 app.get("/tweet", async (req, res) => {
   try {
     const news = await fetchLatestTechNews();
-    console.log("📰 News fetched:", Array.isArray(news) ? news.length : typeof news);
 
     const tweet = await generateTweetFromNews(news);
-  console.log("✍️ Tweet preview:", tweet?.slice(0, 100));
 
     if (tweet) {
       await postToTwitter(tweet);
-      return res.send("✅ Tweet posted successfully!");
+     return res.status(200).send("✅ Tweet posted successfully!");
     }
      res.send("⚠️ No tweet generated");
   } catch (error) {
