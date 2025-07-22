@@ -1,4 +1,30 @@
+// import { TwitterApi } from 'twitter-api-v2';
+// import dotenv from 'dotenv';
+// dotenv.config();
+
+// const twitterClient = new TwitterApi({
+//   appKey: process.env.TWITTER_APP_KEY,
+//   appSecret: process.env.TWITTER_APP_SECRET,
+//   accessToken: process.env.TWITTER_ACCESS_TOKEN,
+//   accessSecret: process.env.TWITTER_ACCESS_SECRET,
+// });
+
+// export async function postToTwitter(tweet) {
+//   try {
+//     const { data } = await twitterClient.v2.tweet(tweet);
+//     // console.log("✅ Tweet posted successfully:", data);
+//     return data;
+//   } catch (error) {
+//     console.error("❌ Twitter Post Error:", error.response?.data || error);
+//     return null;
+//   }
+// }
+
+
 import { TwitterApi } from 'twitter-api-v2';
+import axios from 'axios';
+import fs from 'fs';
+import path from 'path';
 import dotenv from 'dotenv';
 dotenv.config();
 
@@ -9,13 +35,35 @@ const twitterClient = new TwitterApi({
   accessSecret: process.env.TWITTER_ACCESS_SECRET,
 });
 
-export async function postToTwitter(tweet) {
+
+async function uploadImage(imageUrl) {
+  if (!imageUrl) return null;
+
   try {
-    const { data } = await twitterClient.v2.tweet(tweet);
-    // console.log("✅ Tweet posted successfully:", data);
+    const response = await axios.get(imageUrl, { responseType: 'arraybuffer' });
+    const buffer = Buffer.from(response.data, 'binary');
+    const tempPath = path.join(process.cwd(), 'temp_img.jpg');
+    fs.writeFileSync(tempPath, buffer);
+
+    const mediaId = await twitterClient.v1.uploadMedia(tempPath);
+    fs.unlinkSync(tempPath);      
+    return mediaId;
+  } catch (err) {
+    console.error('❌ Image upload failed:', err.message);
+    return null;
+  }
+}
+
+
+export async function postToTwitter(tweet, imageUrl = null) {
+  try {
+    const mediaId = await uploadImage(imageUrl);
+    const payload = mediaId ? { text: tweet, media: { media_ids: [mediaId] } } : { text: tweet };
+
+    const { data } = await twitterClient.v2.tweet(payload);
     return data;
   } catch (error) {
-    console.error("❌ Twitter Post Error:", error.response?.data || error);
+    console.error('❌ Twitter Post Error:', error.response?.data || error);
     return null;
   }
 }
