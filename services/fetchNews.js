@@ -8,7 +8,7 @@ export async function fetchLatestTechNews() {
       params: {
         topic: 'technology',
         lang: 'en',
-        country: 'in', // India-specific tech news
+        country: 'in', 
         max: 1,
         token: process.env.GNEWS_API_KEY, 
       },
@@ -26,7 +26,7 @@ export async function fetchLatestTechNews() {
       image: topArticle.image,
     };
   } catch (error) {
-    console.error('❌ Error fetching news from GNews:', error.response?.data || error.message);
+    console.error('Error fetching news from GNews:', error.response?.data || error.message);
     return null;
   }
 }
