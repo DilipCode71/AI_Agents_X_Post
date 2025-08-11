@@ -17,7 +17,6 @@ app.get("/", (req, res) => {
 app.get("/tweet", async (req, res) => {
   try {
     const news = await fetchLatestTechNews();
-
     const tweet = await generateTweetFromNews(news);
 
 if (tweet && news) {
