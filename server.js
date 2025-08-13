@@ -8,6 +8,8 @@ import { postToTwitter } from "./services/postToTwitter.js";
 
 dotenv.config();
 const app = express();
+let lastTweetTime = 0; // store last tweet timestamp
+const MIN_INTERVAL = 60 * 1000; // 1 minute gap (change if needed)
 
 app.get("/", (req, res) => {
   res.send("🤖 AI Tweet Bot is running!");
@@ -15,6 +17,19 @@ app.get("/", (req, res) => {
 
 
 app.get("/tweet", async (req, res) => {
+
+
+  const now = Date.now();
+
+  if (now - lastTweetTime < MIN_INTERVAL) {
+    return res.status(429).json({
+      error: "Too many requests. Please wait before tweeting again."
+    });
+  }
+
+  lastTweetTime = now;
+
+
   try {
     const news = await fetchLatestTechNews();
     const tweet = await generateTweetFromNews(news);
