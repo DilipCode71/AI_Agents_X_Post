@@ -7,50 +7,39 @@ import { generateTweetFromNews } from "./services/generateTweet.js";
 import { postToTwitter } from "./services/postToTwitter.js";
 
 dotenv.config();
-const app = express();
-let lastTweetTime = 0; // store last tweet timestamp
-const MIN_INTERVAL = 60 * 1000; // 1 minute gap (change if needed)
-
-app.get("/", (req, res) => {
-  res.send("🤖 AI Tweet Bot is running!");
-});
-
+const app = express(); 
+let lastTweetTime = 0;
+const MIN_INTERVAL = 30 * 60 * 1000; // 30 minutes gap
 
 app.get("/tweet", async (req, res) => {
-
-
   const now = Date.now();
 
+  // Agar last tweet ke baad minimum interval nahi hua to skip kar do
   if (now - lastTweetTime < MIN_INTERVAL) {
-    return res.status(429).json({
-      error: "Too many requests. Please wait before tweeting again."
-    });
+    console.log("⏳ Skipping tweet: interval not reached");
+    return res.status(200).send("Skipped to avoid too many requests");
   }
 
   lastTweetTime = now;
-
 
   try {
     const news = await fetchLatestTechNews();
     const tweet = await generateTweetFromNews(news);
 
-if (tweet && news) {
-  await postToTwitter(tweet, news.image);   
-}
-return res.status(204).end(); 
-    // if (tweet) {
-    //   await postToTwitter(tweet);
-    //  return res.status(200).end();
-    // //  return res.status(200).send("Tweet posted successfully!");
-    // }\
-    
-    //  res.send("No tweet generated");
+    if (tweet && news) {
+      await postToTwitter(tweet, news.image);
+      console.log("✅ Tweet posted successfully!");
+      return res.status(200).send("Tweet posted successfully!");
+    } else {
+      console.log("⚠️ No tweet generated");
+      return res.status(200).send("No tweet generated");
+    }
   } catch (error) {
-   console.error(" Tweet Error:", error.message);
-  //  res.status(500).send(" Error generating or posting tweet");
-   return res.status(500).end();
+    console.error("❌ Tweet Error:", error.message);
+    return res.status(500).send("Error generating or posting tweet");
   }
 });
+
 
 
 if (process.env.RUN_LOCAL_CRON === "true") {
