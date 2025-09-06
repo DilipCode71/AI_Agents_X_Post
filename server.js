@@ -1,7 +1,7 @@
 import express from "express";
 import dotenv from "dotenv";
-import { fetchLatestTechNews } from "./services/fetchLatestTechNews.js";
-import { generateTweetFromNews } from "./services/generateTweetFromNews.js";
+import { fetchLatestTechNews } from "./services/fetchNews.js";
+import { generateTweetFromNews } from "./services/generateTweet.js";
 import { postToTwitter } from "./services/postToTwitter.js";
 
 dotenv.config();
