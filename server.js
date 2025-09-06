@@ -28,14 +28,14 @@ app.get("/tweet", async (req, res) => {
 
     if (tweet && news) {
       await postToTwitter(tweet, news.image);
-      console.log("✅ Tweet posted successfully!");
+      console.log(" Tweet posted successfully!");
       return res.status(200).send("Tweet posted successfully!");
     } else {
       console.log("⚠️ No tweet generated");
       return res.status(200).send("No tweet generated");
     }
   } catch (error) {
-    console.error("❌ Tweet Error:", error.message);
+    console.error(" Tweet Error:", error.message);
     return res.status(500).send("Error generating or posting tweet");
   }
 });
@@ -55,10 +55,7 @@ if (process.env.RUN_LOCAL_CRON === "true") {
 
       
       
-      // if (tweet) {
-      //   await postToTwitter(tweet);
-      //   console.log("Tweet posted via local cron");
-      // } 
+      
 
       if (tweet && news) {
   await postToTwitter(tweet, news.image);   

@@ -5,10 +5,11 @@ dotenv.config();
 export async function generateTweetFromNews(news) {
   if (!news || !news.title) return null;
 
-  const prompt = `
-Based on the following Indian tech news headline, write a short tweet (under 280 characters) that is engaging, relevant, and informative for learners.
+const prompt = `
+Based on the following Indian tech news, write a short tweet under 280 characters:
 
-"${news.title}"
+Headline: "${news.title}"
+Description: "${news.description}"
 
 Only reply with the tweet. Add 1-2 hashtags. No explanation.
 `;
