@@ -10,7 +10,7 @@ export async function fetchLatestTechNews() {
         lang: 'en',
         country: 'in', 
         max: 1,
-        token: process.env.GNEWS_API_KEY, 
+        token: process.env.GNEWS_API_KEY,
       },
     });
 
