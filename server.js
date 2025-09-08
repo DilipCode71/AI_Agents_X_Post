@@ -10,7 +10,20 @@ dotenv.config();
 const app = express();
 
 
+let lastTweetTime = 0;
+const MIN_INTERVAL = 24 * 60 * 60 * 1000; // 24 hours
+
+
 app.get("/tweet", async (req, res) => {
+
+
+  const now = Date.now();
+  if (now - lastTweetTime < MIN_INTERVAL) {
+    console.log("⏳ Skipping tweet: 24-hour interval not reached");
+    return res.status(429).send("Only 1 tweet per day allowed.");
+  }
+  lastTweetTime = now;
+
   try {
     const news = await fetchLatestTechNews();
     const tweet = await generateTweetFromNews(news);
