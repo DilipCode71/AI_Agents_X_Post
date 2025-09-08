@@ -14,19 +14,17 @@ const twitterClient = new TwitterApi({
 
 
 async function uploadImage(imageUrl) {
+
   if (!imageUrl) return null;
 
   try {
     const response = await axios.get(imageUrl, { responseType: 'arraybuffer' });
     const buffer = Buffer.from(response.data, 'binary');
-    const tempPath = path.join(process.cwd(), 'temp_img.jpg');
-    fs.writeFileSync(tempPath, buffer);
 
-    const mediaId = await twitterClient.v1.uploadMedia(tempPath);
-    fs.unlinkSync(tempPath);      
-    return mediaId;
+    const mediaId = await twitterClient.v1.uploadMedia(buffer, { type: "jpg" });
+    return mediaId; 
   } catch (err) {
-    console.error('❌ Image upload failed:', err.message);
+    console.error('Image upload failed:', err.message);
     return null;
   }
 }
@@ -40,7 +38,7 @@ export async function postToTwitter(tweet, imageUrl = null) {
     const { data } = await twitterClient.v2.tweet(payload);
     return data;
   } catch (error) {
-    console.error('❌ Twitter Post Error:', error.response?.data || error);
+    console.error('Twitter Post Error:', error.response?.data || error);
     return null;
   }
 }
