@@ -1,9 +1,20 @@
 import axios from "axios";
 import dotenv from 'dotenv';
 dotenv.config();
-
+                                                                                  
 export async function generateTweetFromNews(news) {
   if (!news || !news.title) return null;
+
+
+  const styles = [
+  "Add 1-2 emojis.",
+  "Make it a bit witty.",
+  "Use a question to start.",
+  "Include 1 trending hashtag.",
+  "Keep tone casual and fun.",
+];
+const randomStyle = styles[Math.floor(Math.random() * styles.length)];
+
 
 const prompt = `
 Based on the following Indian tech news, write a short tweet under 280 characters:
@@ -11,7 +22,7 @@ Based on the following Indian tech news, write a short tweet under 280 character
 Headline: "${news.title}"
 Description: "${news.description}"
 
-Only reply with the tweet. Add 1-2 hashtags. No explanation.
+Only reply with the tweet.  ${randomStyle}. No explanation.
 `;
 
   try {

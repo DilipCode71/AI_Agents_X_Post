@@ -3,13 +3,16 @@ import dotenv from 'dotenv';
 dotenv.config();
 
 export async function fetchLatestTechNews() {
+  
+  const countries = ['in', 'us', 'gb', 'ca']; 
+  const randomCountry = countries[Math.floor(Math.random() * countries.length)];
   try {
     const response = await axios.get('https://gnews.io/api/v4/top-headlines', {
       params: {
         topic: 'technology',
         lang: 'en',
-        country: 'in', 
-        max: 1,
+        country: randomCountry, 
+        max: 5,
         token: process.env.GNEWS_API_KEY,
       },
     });
@@ -17,7 +20,13 @@ export async function fetchLatestTechNews() {
     const articles = response.data.articles;
     if (!articles.length) return null;
 
-    const topArticle = articles[0];
+
+
+    // pick random article from the list (to reduce duplicate tweets)
+    const topArticle = articles[Math.floor(Math.random() * articles.length)];
+
+
+    // const topArticle = articles[0];
 
     return {
       title: topArticle.title,

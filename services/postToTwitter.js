@@ -1,7 +1,5 @@
 import { TwitterApi } from 'twitter-api-v2';
 import axios from 'axios';
-import fs from 'fs';
-import path from 'path';
 import dotenv from 'dotenv';
 import { EUploadMimeType } from 'twitter-api-v2';
 
@@ -32,6 +30,7 @@ export async function postToTwitter(tweet, imageUrl = null) {
     const mediaId = await uploadImage(imageUrl);
     const payload = mediaId ? { text: tweet, media: { media_ids: [mediaId] } } : { text: tweet };
     const { data } = await twitterClient.v2.tweet(payload);
+     console.log('Tweet posted:', data);
     return data;
   } catch (error) {
     console.error('Twitter Post Error:', error.response?.data || error);
