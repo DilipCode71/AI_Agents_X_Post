@@ -6,12 +6,8 @@ import { postToTwitter } from "./services/postToTwitter.js";
 import { readLastTweetTime, writeLastTweetTime } from "./services/tweetTimeStore.js";
 
 
-
-
-
 dotenv.config();
 const app = express();
-
 let lastTweetTime = readLastTweetTime();
 const MIN_INTERVAL = 24 * 60 * 60 * 1000; // 24 hours
 
