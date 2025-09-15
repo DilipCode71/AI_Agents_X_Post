@@ -70,6 +70,12 @@ npm run dev
 Production mode:
 npm start
 
+5. Set up UptimeRobot
+
+• Create an account on UptimeRobot.
+• Add a new HTTP(S) monitor with the URL of your server endpoint (e.g., https://ai-agents-x-post.onrender.com).
+• Set the monitoring interval to every 5 minutes to keep the server awake.
+
 📡 API Endpoints
 
 • POST /tweet → Triggers the bot to fetch news, generate a tweet, and post to Twitter.
@@ -96,6 +102,8 @@ OpenRouter + Mistral → AI tweet generation
 Twitter API v2 (twitter-api-v2) → Tweet posting with/without images
 
 Node-Cron → Scheduling daily auto-tweets  
+
+UptimeRobot → Keeping the server awake
 
 
 📌 Example Tweet
