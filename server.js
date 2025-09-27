@@ -7,8 +7,13 @@ import { postToTwitter } from "./services/postToTwitter.js";
 dotenv.config();
 const app = express();
 
+
 app.get("/", (req, res) => {
-  res.send("✅Server is running fine.");
+  res.status(200).json({
+    status: "OK",
+    time: new Date().toISOString(),
+    note: "✅ Server is running fine."
+  });
 });
 
 app.get("/tweet", async (req, res) => {
