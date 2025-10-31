@@ -8,7 +8,7 @@ dotenv.config();
 const app = express();
 
 
-app.get("/", (req, res) => {
+app.get("/start", (req, res) => {
   res.status(200).json({
     status: "OK",
     time: new Date().toISOString(),
